@@ -5,6 +5,11 @@
  * all of the tests that will be run against your application.
  */
 
+/*
+ * READ: Reference to Matthew Cranford
+ * included comments to try and demonstrate understanding
+ */
+
 /* We're placing all of our tests within the $() function,
  * since some of these tests may require DOM elements. We want
  * to ensure they don't run until the DOM is ready.
@@ -94,7 +99,16 @@ $(function() {
        * Remember, loadFeed() is asynchronous so this test will require
        * the use of Jasmine's beforeEach and asynchronous done() function.
        */
-
+       beforeEach(function(done){
+         //to work with loadFeed's async nature
+         loadFeed(0, done);
+       });
+       it('completes work', function(){
+         //retrieve the feed container
+         const feed = document.querySelector('.feed');
+         //feed should have children, at least 1
+         expect(feed.children.length > 0).toBe(true);
+       });
     });
 
 
@@ -104,7 +118,26 @@ $(function() {
        * by the loadFeed function that the content actually changes.
        * Remember, loadFeed() is asynchronous.
        */
-
+       //get the feed
+       const feed = document.querySelector('.feed');
+       //to store the first feed's content (initial feed before change)
+       const firstFeed = [];
+       beforeEach(function(done){
+         //to work with loadFeed's async nature
+         loadFeed(0);
+         Array.from(feed.children).forEach(function(entry){
+           //add that child's content to firstFeed
+           firstFeed.push(entry.innerText);
+         });
+         //call the new feed: we should see a change
+         loadFeed(1,done);
+       });
+       it('content changes', function(){
+         Array.from(feed.children).forEach(function(entry,index){
+           //we can afford to use a .toBe() because if this test failed,
+           //the same exact first feed would still be in
+           expect(entry.innerText === firstFeed[index]).toBe(false);
+         });
+       });
     });
-
 }());
