@@ -120,13 +120,13 @@ $(function() {
        const secondFeed = [];
        beforeEach((done) => {
          //to work with loadFeed's async nature
-         loadFeed(0, function(){
+         loadFeed(1, function(){
            // Setting the value of the firstFeed
            Array.from(feed.children).forEach(function(entry){
              //add that child's content to firstFeed
              firstFeed.push(entry.innerText);
            });
-           loadFeed(1, function(){
+           loadFeed(2, function(){
              // Setting value of secondFeed
              Array.from(feed.children).forEach(function(entry){
                //add that child's content to firstFeed
